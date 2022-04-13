@@ -4,7 +4,7 @@ services:
     container_name: djroomba
     build: .
     ports:
-      - "8000:8000"
+      - "8128:8000"
     environment:
       TELEGRAM_BOT_TOKEN: "${TELEGRAM_BOT_TOKEN}"
       TELEGRAM_BOT_LOG_TOKEN: "${TELEGRAM_BOT_LOG_TOKEN}"
