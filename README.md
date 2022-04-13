@@ -20,6 +20,8 @@ To change seasons you can run:
 docker exec -ti djroomba python3 manage.py runscript vote_joke
 ```
 
+This line can be added to cron in order to automatically change seasons at a specified time
+
 ## TODO
 
 * Find a better solution to changing seasons
