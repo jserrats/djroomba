@@ -73,11 +73,12 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = strtobool(os.getenv("DJROOMBA_DEBUG", "True"))
 
-if not DEBUG:
-    ALLOWED_HOSTS = ["{}.{}".format(os.getenv("SUBDOMAIN"), os.getenv("DOMAIN"))]
-else:
-    ALLOWED_HOSTS = ["localhost", ".localhost", "127.0.0.1", "[::1]"]
+PROD_ALLOWED_HOSTS = ["{}.{}".format(os.getenv("SUBDOMAIN"), os.getenv("DOMAIN")),'.lan']
 
+if not DEBUG:
+   ALLOWED_HOSTS = PROD_ALLOWED_HOSTS
+else:
+   ALLOWED_HOSTS = PROD_ALLOWED_HOSTS + ["localhost", ".localhost", "127.0.0.1", "[::1]", '.local']
 
 # Application definition
 
@@ -127,25 +128,25 @@ WSGI_APPLICATION = "djroomba.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# if DEBUG:  # local
-#     DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-# else:
-DATABASES = {
+if DEBUG:  # local
+    DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "PORT": int(os.getenv("DB_PORT", "5432")),
-        "NAME": os.environ["DB_DATABASE"],
-        "USER": os.environ["DB_USER"],
-        "PASSWORD": os.environ["DB_PASSWORD"],
-        "HOST": os.environ["DB_HOST"],
-        "NAME": "djroomba",
-    },
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "PORT": int(os.getenv("DB_PORT", "5432")),
+            "NAME": os.environ["DB_DATABASE"],
+            "USER": os.environ["DB_USER"],
+            "PASSWORD": os.environ["DB_PASSWORD"],
+            "HOST": os.environ["DB_HOST"],
+            "NAME": "djroomba",
+        },
+    }
 
 
 # Password validation
