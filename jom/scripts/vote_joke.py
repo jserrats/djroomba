@@ -41,7 +41,7 @@ def run():
 
             message = "There were less than 3 jokes this month\nEverybody wins! :/"
             for joke in jokes:
-                message = message + "\n🥉- {}".format(joke.joke)
+                message = message + "\n🥉 {} - {}".format(joke.joke, joke.user.username,)
                 joke.score = 1
                 joke.save()
 
