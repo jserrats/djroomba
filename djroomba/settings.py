@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-from distutils.util import strtobool
 import os
 
 ## JOM
@@ -71,14 +70,23 @@ LOGGING = {
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = strtobool(os.getenv("DJROOMBA_DEBUG", "True"))
+DEBUG = "true" in os.getenv("DJROOMBA_DEBUG", "true").lower()
 
-PROD_ALLOWED_HOSTS = ["{}.{}".format(os.getenv("SUBDOMAIN"), os.getenv("DOMAIN")),'.lan']
+PROD_ALLOWED_HOSTS = [
+    "{}.{}".format(os.getenv("SUBDOMAIN"), os.getenv("DOMAIN")),
+    ".lan",
+]
 
 if not DEBUG:
-   ALLOWED_HOSTS = PROD_ALLOWED_HOSTS
+    ALLOWED_HOSTS = PROD_ALLOWED_HOSTS
 else:
-   ALLOWED_HOSTS = PROD_ALLOWED_HOSTS + ["localhost", ".localhost", "127.0.0.1", "[::1]", '.local']
+    ALLOWED_HOSTS = PROD_ALLOWED_HOSTS + [
+        "localhost",
+        ".localhost",
+        "127.0.0.1",
+        "[::1]",
+        ".local",
+    ]
 
 # Application definition
 
@@ -128,13 +136,13 @@ WSGI_APPLICATION = "djroomba.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-if DEBUG:  # local
+if not os.environ["DB_HOST"]:  # local
     DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
 else:
     DATABASES = {
         "default": {

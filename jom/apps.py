@@ -1,5 +1,5 @@
 from django.apps import AppConfig
-from djroomba.settings import TELEGRAM_BOT_TOKEN
+from djroomba.settings import TELEGRAM_BOT_TOKEN, DEBUG
 
 import logging
 import os
@@ -25,7 +25,7 @@ class JomConfig(AppConfig):
         from jom.bot import BotConfig
 
         logger.debug("{} ready() called".format(__class__.__name__))
-
+        logger.info("DJRoomba - JOM started with Debug {}".format(DEBUG))
         try:
             self.updater = Updater(token=self.bot_token)
             self.bot = self.updater.bot
