@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  django:
+    container_name: djroomba
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      TELEGRAM_BOT_TOKEN: "${TELEGRAM_BOT_TOKEN}"
+      TELEGRAM_BOT_LOG_TOKEN: "${TELEGRAM_BOT_LOG_TOKEN}"
+      DJROOMBA_DEBUG: "${DJROOMBA_DEBUG}"
+      SECRET_KEY: "${SECRET_KEY}"
+      DOMAIN: "${DOMAIN}"
+      SUBDOMAIN: "${SUBDOMAIN}"
+      DB_PORT: "${DB_PORT}"
+      DB_DATABASE: "${DB_DATABASE}"
+      DB_USER: "${DB_USER}"
+      DB_PASSWORD:  "${DB_PASSWORD}" 
+      DB_HOST:  "${DB_HOST}" 
+    networks:
+    - backbone
+networks:
+  backbone:

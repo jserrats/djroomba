@@ -1,0 +1,6 @@
+django-extensions==3.1.5
+gunicorn==20.1.0
+python-telegram-bot==13.11
+# sudo apt-get install python3-dev default-libmysqlclient-dev build-essentials
+mysqlclient==2.1.0
+python-telegram-handler==2.2.1
