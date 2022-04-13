@@ -17,7 +17,7 @@ docker-compose up
 To change seasons you can run:
 
 ```
-python3 manage.py runscript vote_joke
+docker exec -ti djroomba python3 manage.py runscript vote_joke
 ```
 
 ## TODO
