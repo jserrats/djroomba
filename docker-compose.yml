@@ -3,21 +3,30 @@ services:
   django:
     container_name: djroomba
     build: .
-    ports:
-      - "8128:8000"
+    expose:
+      - "8000"
     environment:
       TELEGRAM_BOT_TOKEN: "${TELEGRAM_BOT_TOKEN}"
       TELEGRAM_BOT_LOG_TOKEN: "${TELEGRAM_BOT_LOG_TOKEN}"
-      DJROOMBA_DEBUG: "${DJROOMBA_DEBUG}"
+      DJROOMBA_DEBUG: "False"
       SECRET_KEY: "${SECRET_KEY}"
       DOMAIN: "${DOMAIN}"
       SUBDOMAIN: "${SUBDOMAIN}"
       DB_PORT: "${DB_PORT}"
       DB_DATABASE: "${DB_DATABASE}"
       DB_USER: "${DB_USER}"
-      DB_PASSWORD:  "${DB_PASSWORD}" 
-      DB_HOST:  "${DB_HOST}" 
-    networks:
-    - backbone
-networks:
-  backbone:
+      DB_PASSWORD: "${DB_PASSWORD}"
+      DB_HOST: "${DB_HOST}"
+    volumes:
+      - djroomba_static_volume:/app/staticfiles
+  nginx:
+    container_name: nginx-djroomba
+    build: ./nginx
+    ports:
+      - 8128:80
+    depends_on:
+      - django
+    volumes:
+      - djroomba_static_volume:/staticfiles
+volumes:
+  djroomba_static_volume:

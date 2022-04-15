@@ -21,7 +21,43 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-LOGGING = {
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = "true" in os.getenv("DJROOMBA_DEBUG", "true").lower()
+
+if DEBUG:
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "handlers": {
+            "console": {"class": "logging.StreamHandler", "formatter": "simple"},
+        },
+        "formatters": {
+            "verbose": {
+                "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+                "style": "{",
+            },
+            "simple": {
+                "format": "[{levelname}][{name}] {message}",
+                "style": "{",
+            },
+        },
+        "loggers": {
+            "django": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": True,
+            },
+            "jom": {
+                "handlers": ["console"],
+                "level": "DEBUG",
+                "propagate": True,
+                "formatter": "simple",
+            },
+        },
+    }
+
+else:
+    LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {
@@ -62,20 +98,19 @@ LOGGING = {
     },
 }
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = "true" in os.getenv("DJROOMBA_DEBUG", "true").lower()
-
 PROD_ALLOWED_HOSTS = [
     "{}.{}".format(os.getenv("SUBDOMAIN"), os.getenv("DOMAIN")),
-    ".lan",
+    ".lan", ".local",
 ]
+
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 if not DEBUG:
     ALLOWED_HOSTS = PROD_ALLOWED_HOSTS
@@ -136,7 +171,7 @@ WSGI_APPLICATION = "djroomba.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-if not os.environ["DB_HOST"]:  # local
+if not os.getenv("DB_HOST"):  # local
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",

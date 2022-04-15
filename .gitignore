@@ -10,6 +10,8 @@ Icon
 
 project.env
 
+staticfiles/*
+
 # Thumbnails
 ._*
 

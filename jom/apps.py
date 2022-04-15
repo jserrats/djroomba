@@ -26,6 +26,9 @@ class JomConfig(AppConfig):
 
         logger.debug("{} ready() called".format(__class__.__name__))
         logger.info("DJRoomba - JOM started with Debug {}".format(DEBUG))
+        if self.bot_token is None:
+            logger.info("TELEGRAM_BOT_TOKEN not available, disabling polling")
+            return
         try:
             self.updater = Updater(token=self.bot_token)
             self.bot = self.updater.bot
