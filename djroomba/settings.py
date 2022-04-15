@@ -58,45 +58,45 @@ if DEBUG:
 
 else:
     LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {"class": "logging.StreamHandler", "formatter": "simple"},
-        "telegram": {
-            "class": "telegram_handler.TelegramHandler",
-            "token": os.getenv("TELEGRAM_BOT_LOG_TOKEN"),
-            "chat_id": "11777981",
+        "version": 1,
+        "disable_existing_loggers": False,
+        "handlers": {
+            "console": {"class": "logging.StreamHandler", "formatter": "simple"},
+            "telegram": {
+                "class": "telegram_handler.TelegramHandler",
+                "token": os.getenv("TELEGRAM_BOT_LOG_TOKEN"),
+                "chat_id": "11777981",
+            },
         },
-    },
-    "formatters": {
-        "verbose": {
-            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
-            "style": "{",
+        "formatters": {
+            "verbose": {
+                "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+                "style": "{",
+            },
+            "simple": {
+                "format": "[{levelname}][{name}] {message}",
+                "style": "{",
+            },
         },
-        "simple": {
-            "format": "[{levelname}][{name}] {message}",
-            "style": "{",
+        "loggers": {
+            "django": {
+                "handlers": ["console"],
+                "level": "WARNING",
+                "propagate": True,
+            },
+            "jom": {
+                "handlers": ["console", "telegram"],
+                "level": "INFO",
+                "propagate": True,
+                "formatter": "simple",
+            },
+            "telegram_handler": {
+                "handlers": ["console"],
+                "level": "ERROR",
+                "propagate": True,
+            },
         },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "WARNING",
-            "propagate": True,
-        },
-        "jom": {
-            "handlers": ["console", "telegram"],
-            "level": "INFO",
-            "propagate": True,
-            "formatter": "simple",
-        },
-        "telegram_handler": {
-            "handlers": ["console"],
-            "level": "ERROR",
-            "propagate": True,
-        },
-    },
-}
+    }
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -106,7 +106,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 PROD_ALLOWED_HOSTS = [
     "{}.{}".format(os.getenv("SUBDOMAIN"), os.getenv("DOMAIN")),
-    ".lan", ".local",
+    ".lan",
+    ".local",  # this is not as strict as it should be, but it is intended to only be available through local trusted networks
 ]
 
 STATIC_URL = "/static/"
@@ -114,6 +115,13 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 if not DEBUG:
     ALLOWED_HOSTS = PROD_ALLOWED_HOSTS
+    # this is not as strict as it should be, but it is intended to only be available through local trusted networks
+    CSRF_TRUSTED_ORIGINS = [
+        "http://*.local:8128",
+        "http://*.lan:8128",
+        "https://*.{}".format(os.getenv("DOMAIN")),
+        "http://*.{}:8128".format(os.getenv("DOMAIN")),
+    ]
 else:
     ALLOWED_HOSTS = PROD_ALLOWED_HOSTS + [
         "localhost",
