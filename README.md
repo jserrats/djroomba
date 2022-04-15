@@ -22,6 +22,11 @@ docker exec -ti djroomba python3 manage.py runscript vote_joke
 
 This line can be added to cron in order to automatically change seasons at a specified time
 
+```
+# this runs the first day of each month
+0 0 1 * * (/usr/bin/docker exec djroomba python3 manage.py runscript vote_joke) >> /home/cronlog.txt 2>&1
+```
+
 ## TODO
 
 * Find a better solution to changing seasons
