@@ -95,6 +95,11 @@ else:
                 "level": "ERROR",
                 "propagate": True,
             },
+            "telegram.ext": {
+                "handlers": ["console","telegram"],
+                "level": "WARNING",
+                "propagate": True,
+            },
         },
     }
 
