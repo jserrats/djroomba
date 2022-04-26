@@ -2,7 +2,9 @@ import logging
 import traceback
 
 from django.contrib.auth.models import Group
+from djroomba.models import TelegramUser
 from djroomba.settings import VOTES_PER_SEASON
+from django.db import connection
 
 from telegram import Update, User, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -14,7 +16,7 @@ from telegram.ext import (
 )
 
 from jom.models import Joke, Season, Vote
-from djroomba.models import TelegramUser
+
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +38,8 @@ def authenticated(func):
                     update.effective_user.username, update.effective_user.id
                 )
             )
+        finally:
+            connection.close() #https://code.djangoproject.com/ticket/21597#no1
 
     return wrapper
 
@@ -133,6 +137,7 @@ class BotConfig:
         message = "Joke saved at {}:{}".format(user.username, group.name)
         return message
 
+    @authenticated
     def vote_joke(self, update: Update, context: CallbackContext):
         """Handle a callback query from a InlineKeyboard"""
         query = update.callback_query
