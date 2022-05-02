@@ -65,7 +65,7 @@ class Joke(models.Model):
     @classmethod
     def get_not_voted_jokes(self, voting_user: User, group: Group, season: Season):
         """Returns all jokes from a group during a season that have not been voted yet from a user"""
-        return Joke.objects.filter(group=group, season=season).difference(
+        return Joke.objects.filter(group=group, season=season).exclude(update_id__in=
             self.get_voted_jokes(voting_user, group, season)
         )
 

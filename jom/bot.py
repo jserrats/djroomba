@@ -176,7 +176,7 @@ class BotConfig:
 
                 # reply with new keyboard options
                 query.edit_message_text(
-                    text=f"Selected option: {query.data}",
+                    text=message,
                     reply_markup=InlineKeyboardMarkup(keyboard),
                 )
 
