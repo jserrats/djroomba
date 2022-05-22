@@ -201,6 +201,7 @@ else:
             "PASSWORD": os.environ["DB_PASSWORD"],
             "HOST": os.environ["DB_HOST"],
             "NAME": "djroomba",
+            'OPTIONS': {'charset': 'utf8mb4'},
         },
     }
 
