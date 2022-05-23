@@ -82,7 +82,7 @@ class Vote(models.Model):
     def user_finished_voting(self, voting_user: User, group: Group, season: Season):
         """Checks if a given user has spent all their votes in a season and group"""
         voted_jokes = Joke.get_voted_jokes(voting_user, group, season)
-        return voted_jokes.count() == settings.VOTES_PER_SEASON
+        return voted_jokes.count() == settings.JOM_VOTES_PER_SEASON
 
     @classmethod
     def group_finished_voting(self, group: Group, season: Season):

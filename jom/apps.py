@@ -1,5 +1,5 @@
 from django.apps import AppConfig
-from djroomba.settings import TELEGRAM_BOT_TOKEN, DEBUG
+from djroomba.settings import JOM_TELEGRAM_BOT_TOKEN, DEBUG
 
 import logging
 import os
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class JomConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "jom"
-    bot_token = TELEGRAM_BOT_TOKEN
+    bot_token = JOM_TELEGRAM_BOT_TOKEN
     dispatcher = ""
     bot = ""
     botconfig = ""
@@ -27,7 +27,7 @@ class JomConfig(AppConfig):
         logger.debug("{} ready() called".format(__class__.__name__))
         logger.info("DJRoomba - JOM started with Debug {}".format(DEBUG))
         if self.bot_token is None:
-            logger.info("TELEGRAM_BOT_TOKEN not available, disabling polling")
+            logger.info("JOM_TELEGRAM_BOT_TOKEN not available, disabling polling")
             return
         try:
             self.updater = Updater(token=self.bot_token)

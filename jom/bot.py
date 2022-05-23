@@ -3,7 +3,7 @@ import traceback
 
 from django.contrib.auth.models import Group
 from djroomba.models import TelegramUser
-from djroomba.settings import VOTES_PER_SEASON
+from djroomba.settings import JOM_VOTES_PER_SEASON
 from django.db import connection
 
 from telegram import Update, User, InlineKeyboardButton, InlineKeyboardMarkup
@@ -157,7 +157,7 @@ class BotConfig:
             "User @{} has voted {} times".format(user.username, times_voted + 1)
         )
 
-        if times_voted >= VOTES_PER_SEASON:
+        if times_voted >= JOM_VOTES_PER_SEASON:
             query.edit_message_text(text="You have voted enough already")
         else:
             # if user still has votes left
@@ -166,7 +166,7 @@ class BotConfig:
             vote.save()
 
             # the choosen joke gets an updated score
-            joke.score = joke.score + VOTES_PER_SEASON - times_voted
+            joke.score = joke.score + JOM_VOTES_PER_SEASON - times_voted
             joke.save()
 
             not_voted_jokes = Joke.get_not_voted_jokes(
@@ -174,7 +174,7 @@ class BotConfig:
             )
 
             # if the user has no more votes left we quit
-            if times_voted > (VOTES_PER_SEASON - 2):
+            if times_voted > (JOM_VOTES_PER_SEASON - 2):
                 query.edit_message_text(text=f"Thank you for voting!")
             else:
                 # generating the keyboard with all the options not already voted

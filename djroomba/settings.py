@@ -15,8 +15,8 @@ import os
 
 ## JOM
 
-VOTES_PER_SEASON = 3
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+JOM_VOTES_PER_SEASON = 3
+JOM_TELEGRAM_BOT_TOKEN = os.getenv("JOM_TELEGRAM_BOT_TOKEN")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

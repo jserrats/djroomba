@@ -6,7 +6,7 @@ services:
     expose:
       - "8000"
     environment:
-      TELEGRAM_BOT_TOKEN: "${TELEGRAM_BOT_TOKEN}"
+      JOM_TELEGRAM_BOT_TOKEN: "${JOM_TELEGRAM_BOT_TOKEN}"
       TELEGRAM_BOT_LOG_TOKEN: "${TELEGRAM_BOT_LOG_TOKEN}"
       DJROOMBA_DEBUG: "False"
       SECRET_KEY: "${SECRET_KEY}"

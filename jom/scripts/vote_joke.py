@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 import logging
 from jom.models import Joke, Season, Vote
-from djroomba.settings import TELEGRAM_BOT_TOKEN
+from djroomba.settings import JOM_TELEGRAM_BOT_TOKEN
 
 from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
 
@@ -19,7 +19,7 @@ def run():
         season = Season.get_active()
         return
     
-    bot = Bot(TELEGRAM_BOT_TOKEN)
+    bot = Bot(JOM_TELEGRAM_BOT_TOKEN)
     groups = Group.objects.all()
     season = Season.get_active()
 
