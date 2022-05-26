@@ -92,19 +92,13 @@ else:
                 "propagate": True,
             },
             "jom": {
-                "handlers": ["console"],
-                "level": "INFO",
-                "propagate": True,
-                "formatter": "simple",
-            },
-            "djroomba": {
-                "handlers": ["console"],
+                "handlers": ["console", "telegram"],
                 "level": "INFO",
                 "propagate": True,
                 "formatter": "simple",
             },
             "matrix": {
-                "handlers": ["console"],
+                "handlers": ["console", "telegram"],
                 "level": "INFO",
                 "propagate": True,
                 "formatter": "simple",
@@ -115,7 +109,7 @@ else:
                 "propagate": True,
             },
             "telegram.ext": {
-                "handlers": ["console"],
+                "handlers": ["console", "telegram"],
                 "level": "WARNING",
                 "propagate": True,
             },
