@@ -18,6 +18,12 @@ import os
 JOM_VOTES_PER_SEASON = 3
 JOM_TELEGRAM_BOT_TOKEN = os.getenv("JOM_TELEGRAM_BOT_TOKEN")
 
+## MATRIX
+
+MATRIX_TELEGRAM_BOT_TOKEN = os.getenv("MATRIX_TELEGRAM_BOT_TOKEN")
+MATRIX_IP = "matrix.lan"
+MATRIX_PORT = 1234
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -53,6 +59,12 @@ if DEBUG:
                 "propagate": True,
                 "formatter": "simple",
             },
+            "matrix": {
+                "handlers": ["console"],
+                "level": "DEBUG",
+                "propagate": True,
+                "formatter": "simple",
+            },
         },
     }
 
@@ -62,11 +74,6 @@ else:
         "disable_existing_loggers": False,
         "handlers": {
             "console": {"class": "logging.StreamHandler", "formatter": "simple"},
-            "telegram": {
-                "class": "telegram_handler.TelegramHandler",
-                "token": os.getenv("TELEGRAM_BOT_LOG_TOKEN"),
-                "chat_id": "11777981",
-            },
         },
         "formatters": {
             "verbose": {
@@ -85,7 +92,19 @@ else:
                 "propagate": True,
             },
             "jom": {
-                "handlers": ["console", "telegram"],
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": True,
+                "formatter": "simple",
+            },
+            "djroomba": {
+                "handlers": ["console"],
+                "level": "INFO",
+                "propagate": True,
+                "formatter": "simple",
+            },
+            "matrix": {
+                "handlers": ["console"],
                 "level": "INFO",
                 "propagate": True,
                 "formatter": "simple",
@@ -96,7 +115,7 @@ else:
                 "propagate": True,
             },
             "telegram.ext": {
-                "handlers": ["console","telegram"],
+                "handlers": ["console"],
                 "level": "WARNING",
                 "propagate": True,
             },
@@ -148,6 +167,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "djroomba",
     "jom",
+    "matrix",
 ]
 
 MIDDLEWARE = [
@@ -201,7 +221,7 @@ else:
             "PASSWORD": os.environ["DB_PASSWORD"],
             "HOST": os.environ["DB_HOST"],
             "NAME": "djroomba",
-            'OPTIONS': {'charset': 'utf8mb4'},
+            "OPTIONS": {"charset": "utf8mb4"},
         },
     }
 
