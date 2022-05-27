@@ -74,6 +74,11 @@ else:
         "disable_existing_loggers": False,
         "handlers": {
             "console": {"class": "logging.StreamHandler", "formatter": "simple"},
+            "telegram": {
+                "class": "telegram_handler.TelegramHandler",
+                "token": os.getenv("TELEGRAM_BOT_LOG_TOKEN"),
+                "chat_id": os.getenv("TELEGRAM_BOT_LOG_ID"),
+            },
         },
         "formatters": {
             "verbose": {
