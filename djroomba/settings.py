@@ -139,6 +139,8 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "mediafiles"
 
+LOGIN_URL = "/admin"
+
 if not DEBUG:
     ALLOWED_HOSTS = PROD_ALLOWED_HOSTS
     # this is not as strict as it should be, but it is intended to only be available through local trusted networks

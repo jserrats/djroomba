@@ -21,6 +21,7 @@ from djroomba.settings import DEBUG, MEDIA_ROOT, MEDIA_URL
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("jom/", include("jom.urls")),
+    path("matrix/", include("matrix.urls")),
 ]
 
 if DEBUG:

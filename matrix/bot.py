@@ -32,7 +32,7 @@ class MatrixBot(BotConfig):
     def image(self, update: Update, context: CallbackContext) -> None:
         try:
             user = TelegramUser.get_from_update(update)
-            logger.info("Received a picture from {}".format(user.username))
+            logger.info("Received a picture from django user {}".format(user.username))
         except TelegramUser.DoesNotExist:
             logger.info(
                 "Received a picture from @{} - {}".format(
