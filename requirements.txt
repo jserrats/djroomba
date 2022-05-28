@@ -5,3 +5,4 @@ python-telegram-bot==13.11
 mysqlclient==2.1.0
 python-telegram-handler==2.2.1
 Pillow==9.1.0
+django-cleanup==6.0.0

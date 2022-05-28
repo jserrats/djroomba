@@ -136,6 +136,9 @@ PROD_ALLOWED_HOSTS = [
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "mediafiles"
+
 if not DEBUG:
     ALLOWED_HOSTS = PROD_ALLOWED_HOSTS
     # this is not as strict as it should be, but it is intended to only be available through local trusted networks
@@ -167,6 +170,7 @@ INSTALLED_APPS = [
     "djroomba",
     "jom",
     "matrix",
+    "django_cleanup.apps.CleanupConfig"
 ]
 
 MIDDLEWARE = [
