@@ -21,6 +21,7 @@ services:
       DB_HOST: "${DB_HOST}"
     volumes:
       - djroomba_static_volume:/app/staticfiles
+      - djroomba_media_volume:/app/mediafiles
   nginx:
     container_name: nginx-djroomba
     build: ./nginx
@@ -30,5 +31,7 @@ services:
       - django
     volumes:
       - djroomba_static_volume:/staticfiles
+      - djroomba_media_volume:/mediafiles
 volumes:
   djroomba_static_volume:
+  djroomba_media_volume:

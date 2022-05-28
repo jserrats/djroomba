@@ -2,10 +2,6 @@
 
 This project contains one (at the moment) django app
 
-## JOM (Joke of the Month)
-
-This small project is a weekend project where a telegram bot (in polling mode) is integrated with django. The goal is to have a bot where every member of a group chat can forward a funny jokes, and the bot organizes a contest where each participant gets to vote. It is important first to declare the group members and Telegram IDs in the admin.
-
 ## How to use
 
 Have a `.env` file with the required variables declared in the `docker-compose.yml` then:
@@ -13,6 +9,16 @@ Have a `.env` file with the required variables declared in the `docker-compose.y
 ```
 docker-compose up
 ```
+
+To perform the migrations on the production database:
+
+```
+docker-compose run django python manage.py migrate
+```
+
+## JOM (Joke of the Month)
+
+This small project is a weekend project where a telegram bot (in polling mode) is integrated with django. The goal is to have a bot where every member of a group chat can forward a funny jokes, and the bot organizes a contest where each participant gets to vote. It is important first to declare the group members and Telegram IDs in the admin.
 
 To change seasons you can run:
 
