@@ -11,7 +11,7 @@ from telegram.ext import (
     CallbackContext,
 )
 
-from matrix.matrix import open_as_image, process_image, send_image
+from matrix.matrix import open_as_image, process_image, send_image, clear
 from matrix.models import Image
 
 logger = logging.getLogger(__name__)
@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 class MatrixBot(BotConfig):
     def add_handlers(self, dispatcher):
         dispatcher.add_handler(CommandHandler("start", self.start))
+        dispatcher.add_handler(CommandHandler("clear", self.clear))
         dispatcher.add_handler(MessageHandler(Filters.photo, self.image))
 
     @BotConfig.authenticated
@@ -29,6 +30,11 @@ class MatrixBot(BotConfig):
         message = "Hello {} from {} app".format(user.username, __package__)
         update.message.reply_text(message)
 
+    @BotConfig.authenticated
+    def clear(self, update: Update, context: CallbackContext) -> None:
+        clear()
+        update.message.reply_text("Matrix cleared")
+        
     def image(self, update: Update, context: CallbackContext) -> None:
         try:
             user = TelegramUser.get_from_update(update)
