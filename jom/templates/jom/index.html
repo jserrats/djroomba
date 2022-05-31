@@ -15,54 +15,59 @@
   </head>
   <body>
     <div class="jumbotron text-center">
-      <h1>
-        Joke of the Month Podium</h1>
+      <h1>Joke of the Month Podium</h1>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-4">
+            <table class="table col-md-4">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Username</th>
+                  <th scope="col">Global Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for username, score in scores.items %}
+                  <tr>
+                    <td>{{ username }}</td>
+                    <td>{{ score }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      {% for season, jokes in seasons.items %}
+        <h4>
+          Season {{ season.season_id }}: {{ season.init_time }} -
+          {% if season.end_time %}
+            {{ season.end_time }}
+          {% else %}
+            Current
+          {% endif %}
+        </h4>
         <table class="table">
           <thead class="thead-light">
             <tr>
               <th scope="col">Username</th>
-              <th scope="col">Global Score</th>
+              <th scope="col">Score</th>
+              <th scope="col">Joke</th>
             </tr>
           </thead>
           <tbody>
-            {% for username, score in scores.items %}
+            {% for joke in jokes %}
               <tr>
-                <td>{{ username }}</td>
-                <td>{{ score }}</td>
+                <td>{{ joke.user.username }}</td>
+                <td>{{ joke.score }}</td>
+                <td>{{ joke.joke }}</td>
               </tr>
             {% endfor %}
           </tbody>
         </table>
-      </div>
-      <div class="container">
-        {% for season, jokes in seasons.items %}
-          <h4>
-            Season {{ season.season_id }}: {{ season.init_time }} -
-            {% if season.end_time %}
-              {{ season.end_time }}
-            {% else %}
-              Current
-            {% endif %}
-          </h4>
-          <table class="table">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">Username</th>
-                <th scope="col">Score</th>
-                <th scope="col">Joke</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for joke in jokes %}
-                <tr>
-                  <td>{{ joke.user.username }}</td>
-                  <td>{{ joke.score }}</td>
-                  <td>{{ joke.joke }}</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        {% endfor %}
-      </div>
-    </body>
-  </html>
+      {% endfor %}
+    </div>
+  </body>
+</html>

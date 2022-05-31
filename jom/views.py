@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 @login_required
 def index(request):
     group = request.user.groups.all()[0]
-    all_seasons = Season.objects.all().order_by("season_id").reverse()
+    # get all past finished seasons by order, so the more recent one is the first
+    all_seasons = Season.objects.all().filter(active=False).order_by("season_id").reverse()
 
     seasons = {}
 
