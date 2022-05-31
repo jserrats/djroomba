@@ -13,12 +13,12 @@ def run():
     Django script that performs all the necessary stuff in order to change seasons and begin the voting process
     """
     logger.info("Running ending season script!")
-    
+
     if not Season.objects.all():
         logger.info("No season exists at all. Creating it and quitting")
         season = Season.get_active()
         return
-    
+
     bot = Bot(JOM_TELEGRAM_BOT_TOKEN)
     groups = Group.objects.all()
     season = Season.get_active()
@@ -41,7 +41,10 @@ def run():
 
             message = "There were less than 3 jokes this month\nEverybody wins! :/"
             for joke in jokes:
-                message = message + "\n🥉 {} - {}".format(joke.joke, joke.user.username,)
+                message = message + "\n🥉 {} - {}".format(
+                    joke.joke,
+                    joke.user.username,
+                )
                 joke.score = 1
                 joke.save()
 
@@ -53,7 +56,7 @@ def run():
                 message = "Time to choose the best joke!\n"
                 keyboard = []
                 for index, joke in enumerate(jokes):
-                    message = message + "{}: {}\n".format(index, joke.joke)
+                    message = message + "📩{}: {}\n".format(index, joke.joke)
                     keyboard.append(
                         [InlineKeyboardButton(joke.joke, callback_data=joke.update_id)]
                     )

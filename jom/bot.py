@@ -1,10 +1,9 @@
 import logging
-import traceback
 
 from django.contrib.auth.models import Group
 from djroomba.models import TelegramUser
 from djroomba.settings import JOM_VOTES_PER_SEASON
-from django.db import connection
+from djroomba.bot_template import BotConfig
 
 from telegram import Update, User, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -20,38 +19,8 @@ from jom.models import Joke, Season, Vote
 
 logger = logging.getLogger(__name__)
 
-
-def authenticated(func):
-    """Check that only users in the database have access to the bot"""
-
-    def wrapper(*args, **kwargs):
-        try:
-            func(*args, **kwargs)
-        except TelegramUser.DoesNotExist:
-            update = args[1]
-            message = "You are not in the database. Your telegram user id is {}".format(
-                update.effective_user.id
-            )
-            update.message.reply_text(message)
-            logger.warn(
-                "User @{} - {} tried to use the bot".format(
-                    update.effective_user.username, update.effective_user.id
-                )
-            )
-        finally:
-            connection.close() #https://code.djangoproject.com/ticket/21597#no1
-
-    return wrapper
-
-
-class BotConfig:
-    def __init__(self, updater) -> None:
-        self.bot = updater.bot
-
-        # Get the dispatcher to register handlers
-        dispatcher = updater.dispatcher
-
-        # on different commands - answer in Telegram
+class JomBot(BotConfig):
+    def add_handlers(self, dispatcher):
         dispatcher.add_handler(CommandHandler("start", self.start))
 
         # on non command i.e message - echo the message on Telegram
@@ -62,29 +31,15 @@ class BotConfig:
         )
         dispatcher.add_handler(MessageHandler(Filters.forwarded, self.joke_forwarded))
         dispatcher.add_handler(CallbackQueryHandler(self.vote_joke))
-        dispatcher.add_error_handler(self.error_handler)
-        logger.debug("Bot {} finished adding handlers".format(updater.bot.name))
 
-    def error_handler(self, update: object, context: CallbackContext) -> None:
-        """Log the error"""
-        # traceback.format_exception returns the usual python message about an exception, but as a
-        # list of strings rather than a single string, so we have to join them together.
-        tb_list = traceback.format_exception(None, context.error, context.error.__traceback__)
-        tb_string = ''.join(tb_list)
-
-        logger.exception(msg=f"Exception while handling an update:\n{tb_string}")
-        # Finally, send the message
-        #context.bot.send_message(chat_id=DEVELOPER_CHAT_ID, text=message, parse_mode=ParseMode.HTML)
-
-
-    @authenticated
+    @BotConfig.authenticated
     def start(self, update: Update, context: CallbackContext) -> None:
         """Send a message when the command /start is issued."""
         user = TelegramUser.get_from_update(update)
         message = "Hello {}".format(user.username)
         update.message.reply_text(message)
 
-    @authenticated
+    @BotConfig.authenticated
     def joke(self, update: Update, context: CallbackContext):
         """Add a new joke to the database"""
         logging.debug("New update - direct joke")
@@ -92,7 +47,7 @@ class BotConfig:
         message = self.store_joke(user, update)
         update.message.reply_text(message)
 
-    @authenticated
+    @BotConfig.authenticated
     def joke_forwarded(self, update: Update, context: CallbackContext):
         """Add a new joke to the database that has been forwarded from another user"""
         logging.debug("New update - forwarded joke")
@@ -137,7 +92,7 @@ class BotConfig:
         message = "Joke saved at {}:{}".format(user.username, group.name)
         return message
 
-    @authenticated
+    @BotConfig.authenticated
     def vote_joke(self, update: Update, context: CallbackContext):
         """Handle a callback query from a InlineKeyboard"""
         query = update.callback_query

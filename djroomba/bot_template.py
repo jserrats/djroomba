@@ -33,7 +33,7 @@ class BotConfig:
             self.updater = Updater(token=bot_token)
             self.bot = self.updater.bot
         except InvalidToken:
-            self.logger.error("Invalid Token : {}".format(bot_token))
+            self.logger.error("Invalid Token : '{}'".format(bot_token))
             return
         except TelegramError as er:
             self.logger.error("Error : {}".format(repr(er)))
