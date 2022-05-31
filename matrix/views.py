@@ -3,8 +3,8 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 
-from matrix.matrix import open_as_image, process_image, send_image
 from matrix.models import Image
+import matrix.matrix as m
 
 
 @login_required
@@ -18,8 +18,8 @@ def index(request):
 @login_required
 def print(request, image_name):
     image = get_object_or_404(Image, photo="matrix/" + image_name)
-    im = open_as_image(image.photo)
-    send_image(process_image(im))
+    im = m.open_as_image(image.photo)
+    m.send_image(m.process_image(im))
     return HttpResponse("OK")
 
 
@@ -28,4 +28,11 @@ def print(request, image_name):
 def delete(request, image_name):
     image = get_object_or_404(Image, photo="matrix/" + image_name)
     image.delete()
+    return HttpResponse("OK")
+
+
+@require_POST
+@login_required
+def clear(request):
+    m.clear()
     return HttpResponse("OK")
