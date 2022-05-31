@@ -65,8 +65,17 @@ class Joke(models.Model):
     @classmethod
     def get_not_voted_jokes(self, voting_user: User, group: Group, season: Season):
         """Returns all jokes from a group during a season that have not been voted yet from a user"""
-        return Joke.objects.filter(group=group, season=season).exclude(update_id__in=
-            self.get_voted_jokes(voting_user, group, season)
+        return Joke.objects.filter(group=group, season=season).exclude(
+            update_id__in=self.get_voted_jokes(voting_user, group, season)
+        )
+
+    @classmethod
+    def season_joke_podium(self, season: Season, group: Group):
+        """Returns the 3 jokes that won the season for this group"""
+        return (
+            Joke.objects.filter(group=group, season=season)
+            .order_by("score")
+            .reverse()[:3]
         )
 
 
