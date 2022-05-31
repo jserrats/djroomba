@@ -1,7 +1,6 @@
 import logging
 import traceback
 import os
-import importlib
 
 from djroomba.settings import DEBUG
 
@@ -10,7 +9,7 @@ from django.db import connection
 from django.core.exceptions import ObjectDoesNotExist
 
 from telegram.ext import Updater, CallbackContext
-from telegram.error import InvalidToken, TelegramError
+from telegram.error import InvalidToken, TelegramError, NetworkError
 
 
 class BotConfig:
@@ -54,13 +53,20 @@ class BotConfig:
 
     def error_handler(self, update: object, context: CallbackContext) -> None:
         """Log the error"""
+        
+        # ignore the NetworkError error, since it fixes itself, and if not, we won't ever know
+        if type(context.error) == NetworkError:
+            return
+        
         # traceback.format_exception returns the usual python message about an exception, but as a
         # list of strings rather than a single string, so we have to join them together.
         tb_list = traceback.format_exception(
             None, context.error, context.error.__traceback__
         )
         tb_string = "".join(tb_list)
-
+        self.logger.info(
+            f"The follwing message will have an exception for {type(context.error).__name__}"
+        )
         self.logger.exception(
             msg=f"Bot {self.bot.name} - Exception while handling an update:\n{tb_string}"
         )
