@@ -21,7 +21,7 @@ class BotConfig:
             # logger.info("No server detected. Telegram bot won't be started")
             return
 
-        self.logger.info("DJRoomba - {} started with Debug {}".format(app_name, DEBUG))
+        self.logger.debug("DJRoomba - {} loaded with DEBUG: {}".format(app_name, DEBUG))
         if bot_token is None:
             self.logger.info(
                 "{0}_TELEGRAM_BOT_TOKEN not available, disabling polling for {0}".format(
@@ -46,7 +46,7 @@ class BotConfig:
         self.logger.debug("Bot {} finished adding handlers".format(self.bot.name))
 
         self.updater.start_polling()
-        self.logger.info("Bot {} started polling".format(self.bot.name))
+        self.logger.info("Bot {} started polling - DEBUG: {}".format(self.bot.name,DEBUG))
 
     def add_handlers(dispatcher):
         pass
