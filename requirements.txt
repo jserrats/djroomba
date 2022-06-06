@@ -4,5 +4,5 @@ python-telegram-bot==13.11
 # sudo apt-get install python3-dev default-libmysqlclient-dev build-essentials
 mysqlclient==2.1.0
 python-telegram-handler==2.2.1
-Pillow==9.1.0
+Pillow==9.1.1
 django-cleanup==6.0.0
